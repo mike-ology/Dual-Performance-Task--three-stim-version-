@@ -1,0 +1,14 @@
+Version 1.4.1 - 28/Mar/2019
+- [FIX] Output copied to default location now includes line-breaks!.
+
+Version 1.04 - 22/Mar/2019
+- [ADDED] New parameters allows skipping ahead to different sections in the experiment. Useful for unexpected interuptions.
+- [ADDED] Logfile now contains participant number instead of the text "participant_code"
+- [ADDED] Output files will be stored on the "C:/Presentation Output" root folder initially and will be copied to the default location at the end of the experiment (before the End of Experiment message). If the program ends early, the logfile will not be copied and the partial file will be found in the local folder. Presentation will crash if this folder does not exist.
+- [CHANGE] Sounds are now loaded once at the beginning of the experiment instead of prior to every trial.
+- [CHANGE] Log files output for presented stimuli are now numbers instead of filenames
+- [CHANGE] RT on block summary is calculated across correct trials only
+- [FIX] Divide-by-zero error will not occur when zero correct for a block and attempting to calculation average RT. Will display 0 for the average RT instead.
+
+Version 1.01 - 17-Oct-2018
+- [FIX] Program incorrectly calculated accuracy and RT for block summary screens. Accuracy was calculated by dividing number of correct trials by 13, when only 12 trials were presented. This resulted in extra blocks being run when accuracy criteria was actually met! However, this does not invalidate any output in the logfiles.
