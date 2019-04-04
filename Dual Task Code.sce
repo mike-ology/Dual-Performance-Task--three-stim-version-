@@ -22,7 +22,7 @@ array {
 	sound { wavefile { filename = "sound_1.wav"; preload = true; description = "file 4"; } wav_1; } dual_sound;
 	sound { wavefile { filename = "sound_2.wav"; preload = true; description = "file 5";} ; };
 	sound { wavefile { filename = "sound_3.wav"; preload = true; description = "file 6";} ; };
-	sound { wavefile { filename = "nothing.wav"; preload = true; } ; };
+	sound { wavefile { filename = "nothing.wav"; preload = true; }; };
 }sound_array; 
 
 array{
@@ -31,6 +31,33 @@ array{
 	bitmap { filename = "shape_3.bmp"; height = 100; scale_factor = scale_to_height; description = "shape_3";} shape_3;
 	bitmap { filename = "nothing.png"; height = 50; scale_factor = scale_to_height; transparent_color = 0, 0, 0; description = "nothing"; } shape_blank;
 }bmp_array;
+
+### DEFINE SOUND TEST
+
+trial {
+	trial_duration = forever;
+	trial_type = specific_response;
+	terminator_button = 1, 2, 3, 4;
+	all_responses = true;
+	stimulus_event {
+		picture {
+			text { caption = "A section in this task requires you to respond to various sounds."; };
+			x = 0; y = 200;
+			text { caption = "CURRENT VOLUME"; font_size = 32; font_color = 0, 0, 255; } volume_text;
+			x = 0; y = 100;
+			text { caption = "Press [A] to play a sound\n\nPress [S] to increase the volume\nPress [D] to decrease the volume"; };
+			x = 0; y = -50;
+			text { caption = "If you cannot hear anything, you may need to press [ESCAPE] to close the program\nand adjust the volume settings in Windows. The sound output device may be incorrect."; };
+			x = 0; y = -200;
+			text { caption = "Press [SPACEBAR] when the volume is comfortable to continue"; };
+			x = 0; y = -300;
+		};
+		time = 0;
+		duration = next_picture;
+		response_active = true;
+		target_button = 1, 2, 3, 4;
+	};
+}sound_test_trial;
 
 # INSTRUCTIONS
 
@@ -253,12 +280,88 @@ begin_pcl;
 												# PCL SECTION #
 												###############
 
-int participant = parameter_manager.get_int( "participant", 999 ); 
-string participant_string = string( participant ); 
+double volume_level = 0.25;
+
+loop
+	bool exit = false
+until
+	exit == true
+begin
+	set_system_volume( volume_level, volume_level );
+	volume_text.set_caption( "Current volume level: " + string( round( volume_level * 100.0, 0 ) ) + "%", true );
+	sound_test_trial.present();
+	
+	response_data test_response = response_manager.last_response_data();
+	
+	if test_response.button() == 1 then
+		exit = true
+	elseif test_response.button() == 2 then
+		sound_array[random(1, 4)].present();
+	elseif test_response.button() == 3 then
+		volume_level = volume_level + 0.05;
+		if volume_level > 1.0 then volume_level = 1.0 else end;
+	elseif test_response.button() == 4 then
+		volume_level = volume_level - 0.05;
+		if volume_level < 0.0 then volume_level = 0.0 else end;
+	end;
+	
+end;
+
+##############################################
+###   Generate output file
+
+string participant;
+int logfile_inc = 1;
+
+if logfile.subject() == "" then
+	participant = "NULL 999"
+else
+	participant = logfile.subject();
+end;
+
+string local_path; 
+string filename;
+string use_local_save;
+output_file dual_log = new output_file;
+
+loop
+	bool log_success
+until
+	log_success == true
+begin
+
+	use_local_save = parameter_manager.get_string( "Use Local Save", "NO" );
+	local_path = "C:/Presentation Output/DUAL3/";
+	filename = "DUAL3 - Participant " +  participant + "_" + string( logfile_inc ) + ".txt";
+
+	if use_local_save == "YES" then
+		create_directory( local_path );
+		if file_exists( local_path + filename ) then
+			# do nothing
+		else
+			dual_log.open( local_path + filename );
+			break
+		end;
+
+	else
+		if file_exists( logfile_directory + filename ) then
+			# do nothing
+		else
+			dual_log.open( filename );
+			break
+		end;
+	end;
+	
+	logfile_inc = logfile_inc + 1;
+
+end;
+
+##############################################
 
 # Decide response mapping
 int dual_mapping;
-int last_dig = int (participant_string.substring( participant_string.count(), 1 ) ); term.print_line( last_dig );
+
+int last_dig = int (participant.substring( participant.count(), 1 ) ); term.print_line( last_dig );
 
 if	last_dig == 0 || last_dig == 2 || last_dig == 4 || last_dig == 6 || last_dig == 8 then
 	dual_mapping = 1;
@@ -271,20 +374,20 @@ end;
 
 term.print_line( "Key mapping: " + string(dual_mapping) );
 
-###   Create logfile and headers
+###   Create logfile headers
 
 string date = date_time();
 
-string local_path = "C:/Presentation Output/";
-string filename = "DUAL3 - Participant " + string( participant ) + ".txt";
+#string local_path = "C:/Presentation Output/";
+#string filename = "DUAL3 - Participant " + string( participant ) + ".txt";
 
-create_directory( local_path );
+#create_directory( local_path );
 
-output_file dual_log = new output_file;
-dual_log.open_append( local_path + filename ); 
+#output_file dual_log = new output_file;
+#dual_log.open_append( local_path + filename ); 
 dual_log.print("DUAL3 Task\n"); 
 dual_log.print("Participant "); 
-dual_log.print( string( participant ) );
+dual_log.print( participant  );
 dual_log.print("\n"); #tab
 dual_log.print( date );
 dual_log.print("\n");#new line
@@ -390,13 +493,6 @@ begin
 		else
 			term.print_line( "PRP2 instruct error" );
 		end;
-
-		# required to change the sound
-		#wav_1.unload();
-		#wav_1.load();
-		
-		# play sound file
-		#dual_sound.present();
 
 		if section == 2 then
 			dual2_instruct_pic.present();
@@ -826,23 +922,36 @@ dual_log.print ( string( round( time, 2) ) + "\tminutes" );
 
 dual_log.print( "\n\n===== END OF FILE =====\n\n" );
 
-###################################################################################
+#########################################################
+# Subroutine to copy logfile back to the default location
+# Requires the strings associated with:
+#	[1] the local file path
+#	[2] the file name
+#	[3] if save operation is to be performed ("YES"/"NO") 
 
 dual_log.close();
 
-input_file local_input = new input_file();
-local_input.open( local_path + filename );
+bool copy_success = true;
+double starting_scale_factor = 1.0;
+picture prompt_pic = new picture();
+include "sub_generate_prompt.pcl";
+include "sub_force_local_save.pcl";
 
-output_file final_output = new output_file();
-final_output.open_append( filename );
+sub_save_to_network( local_path, filename, use_local_save );	
 
-loop
-until
-	local_input.end_of_file() == true
-begin
-	final_output.print_line( local_input.get_line() );
+create_new_prompt( 1 );
+
+if copy_success == true then
+	prompt_message.set_caption( "End of task! Thank you!\n\nPlease notify the experimenter.\n\n<font color = '0,255,0'>LOGFILE WAS SAVED TO DEFAULT LOCATION</font>", true )
+elseif copy_success == false then
+	prompt_message.set_caption( "End of task! Thank you!\n\nPlease notify the experimenter.\n\n<font color = '255,0,0'>LOGFILE WAS SAVED TO:\n</font>" + local_path, true );
+else
 end;
 
-###################################################################################
+mid_button_text.set_caption( "Press [SPACE] to close the program", true );
 
+#########################################################
+
+end_of_task.clear_stimulus_events();
+end_of_task.add_stimulus_event( prompt_pic );
 end_of_task.present();
