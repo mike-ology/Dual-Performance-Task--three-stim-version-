@@ -1,5 +1,5 @@
 <ver>20.3</ver>
-<efn>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.4.1\Dual Stimulus Task Experiment.exp</efn>
+<efn>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.5.0\Dual Stimulus Task Experiment.exp</efn>
 <author>MCWE</author>
 <con>
 <pause>P</pause>
@@ -40,11 +40,11 @@
 <lfn></lfn>
 </docs>
 <dp_list></dp_list>
-<dsd>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.4.1</dsd>
+<dsd>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.5.0</dsd>
 <dwm>0</dwm>
 <dxv>8</dxv>
 <efs>
-<filename>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.4.1\Dual Task Code.sce</filename>
+<filename>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.5.0\Dual Task Code.sce</filename>
 </efs>
 <exclusive_mouse>1</exclusive_mouse>
 <exp_version>1.04</exp_version>
@@ -114,7 +114,11 @@
 <parm>
 <id>1</id>
 <set>
-<desc></desc>
+<desc>Initially saves logfile data to "C:/Presentation_Output/" during the scenario and then creates an identical logfile in the default logfile location at the end of the scenario.
+
+Useful when running the experiment from a network location (improves stability).
+
+Must be set to "NO" when running on mobile (due to differing logfile locations)</desc>
 <edit>1</edit>
 <name>Use Local Save</name>
 <set>
@@ -168,7 +172,7 @@
 <idt>0</idt>
 <ilc>0</ilc>
 <ip_chans></ip_chans>
-<lfd>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.4.1\Dual Task Logfiles</lfd>
+<lfd>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.5.0\Dual Task Logfiles</lfd>
 <lnb>2</lnb>
 <lno>4</lno>
 <log>
@@ -252,48 +256,6 @@
 <name>Keyboard</name>
 </device>
 <device>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<abs_axis>
-<dead_zone>0</dead_zone>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<saturation>1</saturation>
-</abs_axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>X-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Y-axis</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<axis>
-<max>1000</max>
-<min>-1000</min>
-<name>Wheel</name>
-<restricted>1</restricted>
-<scale>1</scale>
-</axis>
-<device_type>2</device_type>
-<dx_device_type>0</dx_device_type>
-<max_raw_pos>65535</max_raw_pos>
-<min_raw_pos>0</min_raw_pos>
-<name>HID-compliant mouse</name>
-</device>
-<device>
 <device_type>3</device_type>
 <dx_device_type>0</dx_device_type>
 <name>HID Keyboard Device</name>
@@ -344,6 +306,48 @@
 <max_raw_pos>65535</max_raw_pos>
 <min_raw_pos>0</min_raw_pos>
 <name>Synaptics HID ClickPad</name>
+</device>
+<device>
+<abs_axis>
+<dead_zone>0</dead_zone>
+<max>1000</max>
+<min>-1000</min>
+<name>X-axis</name>
+<saturation>1</saturation>
+</abs_axis>
+<abs_axis>
+<dead_zone>0</dead_zone>
+<max>1000</max>
+<min>-1000</min>
+<name>Y-axis</name>
+<saturation>1</saturation>
+</abs_axis>
+<axis>
+<max>1000</max>
+<min>-1000</min>
+<name>X-axis</name>
+<restricted>1</restricted>
+<scale>1</scale>
+</axis>
+<axis>
+<max>1000</max>
+<min>-1000</min>
+<name>Y-axis</name>
+<restricted>1</restricted>
+<scale>1</scale>
+</axis>
+<axis>
+<max>1000</max>
+<min>-1000</min>
+<name>Wheel</name>
+<restricted>1</restricted>
+<scale>1</scale>
+</axis>
+<device_type>2</device_type>
+<dx_device_type>0</dx_device_type>
+<max_raw_pos>65535</max_raw_pos>
+<min_raw_pos>0</min_raw_pos>
+<name>HID-compliant mouse</name>
 </device>
 <device>
 <abs_axis>
@@ -750,7 +754,7 @@
 <offset>38</offset>
 </idv>
 <overrides></overrides>
-<sfn>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.4.1\Dual Task Code.sce</sfn>
+<sfn>V:\Cognitive Tasks (NBS Presentation)\DUAL (three stim) v1.5.0\Dual Task Code.sce</sfn>
 </sce>
 <sct>
 <capture_device>
